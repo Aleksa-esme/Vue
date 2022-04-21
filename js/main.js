@@ -7,13 +7,20 @@ const app = new Vue({
         products: [],
         filtered: [],
         imgCatalog: 'https://via.placeholder.com/200x150',
-        userSearch: '',
-        show: false
+        searchLine: '',
+        showProduct: true,
+        showCart: false,
     },
     methods: {
+        
         filter(value) {
          const regexp = new RegExp(value, 'i');
          this.filtered = this.products.filter(product => regexp.test(product.product_name));
+         this.products.forEach(el => {
+            if (!this.filtered.includes(el)) {
+                el.showProduct = !this.showProduct;
+            }
+         })
         },
         
         async getJson(url) {
@@ -35,6 +42,7 @@ const app = new Vue({
            .then(data => {
                for(let el of data){
                    this.products.push(el);
+                   this.filtered.push(el);
                }
            });
     }
