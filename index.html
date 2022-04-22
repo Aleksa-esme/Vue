@@ -31,7 +31,7 @@
                         <div class="right-block">
                             <p class="product-price">{{product.quantity * product.price}} $</p>
                             <button @click="addProduct(product)" class="cart-btn">+</button>
-                            <button class="cart-btn">-</button>
+                            <button @click="decreaseProduct(product)" class="cart-btn">-</button>
                             <button @click="removeProduct(product)" class="cart-btn">&times;</button>
                         </div>
                     </div>

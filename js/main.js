@@ -51,12 +51,20 @@ const app = new Vue({
             }
         },
 
+        decreaseProduct(product) {
+            if (product.quantity == 1) {
+                this.removeProduct(product);
+            } else {
+                product.quantity--; // не нужно Vue.set(), тк свойство уже стало реактивным в addProduct
+            }
+        },
+
         removeProduct(product) {
+            //Для обновления отрисовки корзины исп. this.cartItems = this.cartItems.filter()
             this.cartItems = this.cartItems.filter(item => {
                 return item !== product;
             })
         },
-
     },
     
     mounted() {
