@@ -7,9 +7,11 @@ const app = new Vue({
         products: [],
         filtered: [],
         imgCatalog: 'https://via.placeholder.com/200x150',
+        imgCart: 'https://via.placeholder.com/50x100',
         searchLine: '',
         showProduct: true,
-        showCart: false,
+        isVisibleCart: false,
+        cartItems: [],
     },
     methods: {
         
@@ -31,10 +33,25 @@ const app = new Vue({
                 console.log(error);
             }
         },
+
+        showCart() {
+            this.isVisibleCart = !this.isVisibleCart;
+        },
         
         addProduct(product) {
-            console.log(product.id_product);
-        }
+            // Во Vue нельзя динамически добавлять новые корневые реактивные свойства в уже существующий экземпляр.
+            // Можно добавить реактивное свойство во вложенные объекты, используя метод Vue.set(object, propertyName, value)
+            product.quantity ? product.quantity : Vue.set(product, 'quantity', 0);
+            if (!this.cartItems.includes(product)) {
+                product.quantity = 1;
+                this.cartItems.push(product);
+            } else {
+                let cartItemId = this.cartItems.indexOf(product);
+                this.cartItems[cartItemId].quantity++;
+            }
+        },
+
+
     },
     
     mounted() {
