@@ -51,6 +51,11 @@ const app = new Vue({
             }
         },
 
+        removeProduct(product) {
+            this.cartItems = this.cartItems.filter(item => {
+                return item !== product;
+            })
+        },
 
     },
     
