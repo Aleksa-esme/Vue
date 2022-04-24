@@ -11,49 +11,38 @@
     <header>
         <div class="logo">E-shop</div>
         <div class="cart">
-            <form action="#" class="search-form">
+            
+            <form action="#" class="search-form" @submit.prevent="filter(searchLine)">
                 <input v-model="searchLine" type="text" class="search-field">
-                <button class="btn-search" type="submit" @click="filter(searchLine)">
+                <button class="btn-search" type="submit">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
+            
             <button @click="showCart()" class="btn-cart" type="button">Корзина</button>
-            <div v-show="isVisibleCart" class="cart-block">
-                <p v-if="cartItems == 0">В корзине еще нет товаров</p>
-                <div v-else="cartItems > 0" v-for="product in cartItems" class="cart-item" :key="product.id_product">
-                    <div class="product-bio">
-                        <img :src="imgCart" alt="Some img">
-                        <div class="product-desc">
-                            <p class="product-title">{{product.product_name}}</p>
-                            <p class="product-quantity">{{product.quantity}} шт.</p>
-                            <p class="product-single-price">{{product.price}} $</p>
-                        </div>    
-                        <div class="right-block">
-                            <p class="product-price">{{product.quantity * product.price}} $</p>
-                            <button @click="addProduct(product)" class="cart-btn">+</button>
-                            <button @click="decreaseProduct(product)" class="cart-btn">-</button>
-                            <button @click="removeProduct(product)" class="cart-btn">&times;</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <cart 
+                :cart-items="cartItems"
+                :img="imgCart"
+                :visibility="isVisibleCart"
+            >
+            </cart>
+
         </div>
     </header>
     <main>
-        <div class="products">
-            <div v-show="showProduct" class="product-item" v-for="product of filtered" :key="product.id_product">
-                <img :src="imgCatalog" alt="Some img">
-                <div class="desc">
-                    <h3>{{product.product_name}}</h3>
-                    <p>{{product.price}} $</p>
-                    <button class="buy-btn" @click="addProduct(product)">Купить</button>
-                </div>
-            </div>
-        </div>
+        <!-- передаем в компонент products параметры из main.js -->
+        <products 
+            :products="filtered"
+            :img="imgCatalog"
+            @add-product="addProduct"
+        >
+        </products>
     </main>
 </div>
     <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/ProductComponent.js"></script>
+    <script src="js/CartComponent.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -12,6 +12,7 @@ const app = new Vue({
         showProduct: true,
         isVisibleCart: false,
         cartItems: [],
+        error: false,
     },
     methods: {
         
