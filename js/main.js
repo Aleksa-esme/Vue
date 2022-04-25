@@ -32,6 +32,7 @@ const app = new Vue({
                 return await result.json();
             } catch (error) {
                 console.log(error);
+                this.error = !this.error;
             }
         },
 
@@ -69,7 +70,7 @@ const app = new Vue({
     },
     
     mounted() {
-       this.getJson(`${API + this.catalogUrl}`)
+        this.getJson(`${API + this.catalogUrl}`)
            .then(data => {
                for(let el of data){
                    this.products.push(el);

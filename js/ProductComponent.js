@@ -1,7 +1,7 @@
 Vue.component('products', {
     props: ['products', 'img'],
     template: `
-                <div class="products">
+                <div class="products" v-if="$parent.error===false">
                     <product v-for="item of products" 
                     :key="item.id_product"
                     :img="img"
@@ -9,6 +9,7 @@ Vue.component('products', {
                     >
                     </product>
                 </div>
+                <errormessage v-else="$parent.error===true"></errormessage>
     `
 });
 
@@ -22,6 +23,16 @@ Vue.component('product', {
                         <p>{{product.price}} $</p>
                         <button class="buy-btn" @click="$parent.$emit('add-product', product)">Купить</button>
                     </div>
+                </div>
+    `
+});
+
+// работает с локальным компонентом. Как импортировать в этот файл компонент из ErrorComponent.js?
+Vue.component('errormessage', {
+    props: [],
+    template: `
+                <div>
+                    <p>Не удалось выполнить запрос к серверу</p>
                 </div>
     `
 });
