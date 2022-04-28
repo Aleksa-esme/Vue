@@ -7,33 +7,26 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div id="app">
-    <header>
-        <div class="logo">E-shop</div>
-        <div class="cart">
+    <div id="app">
+        <header>
+            <div class="logo">E-shop</div>
+            <div class="cart">
+                
+                <filtersearch ></filtersearch>
+
+                <cart ref="cart"></cart>
             
-            <filtersearch ></filtersearch>
-
-            <button @click="showCart()" class="btn-cart" type="button">Корзина</button>
-            <cart 
-                :cart-items="cartItems"
-                :img="imgCart"
-                :visibility="isVisibleCart"
-            >
-            </cart>
-
-        </div>
-    </header>
-    <main>
-        <!-- передаем в компонент products параметры из main.js -->
-        <products 
-            :products="filtered"
-            :img="imgCatalog"
-            @add-product="addProduct"
-        >
-        </products>
-    </main>
-</div>
+            </div>
+        </header>
+        <main>
+            
+            <products ref="products"></products>
+            
+            <errormessage></errormessage>
+        
+        </main>
+    </div>
+    
     <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="js/ProductComponent.js"></script>
@@ -41,5 +34,6 @@
     <script src="js/FilterComponent.js"></script>
     <script src="js/ErrorComponent.js"></script>
     <script src="js/main.js"></script>
+
 </body>
 </html>

@@ -1,19 +1,4 @@
-Vue.component('products', {
-    props: ['products', 'img'],
-    template: `
-                <div class="products" v-if="$parent.error===false">
-                    <product v-for="item of products" 
-                    :key="item.id_product"
-                    :img="img"
-                    :product="item"
-                    >
-                    </product>
-                </div>
-                <errormessage v-else="$parent.error===true"></errormessage>
-    `
-});
-
-Vue.component('product', {
+const product = {
     props: ['product', 'img'],
     template: `
                 <div class="product-item">
@@ -21,24 +6,46 @@ Vue.component('product', {
                     <div class="desc">
                         <h3>{{product.product_name}}</h3>
                         <p>{{product.price}} $</p>
-                        <button class="buy-btn" @click="$parent.$emit('add-product', product)">Купить</button>
+                        <button class="buy-btn" @click="$root.$refs.cart.addProduct(product)">Купить</button>
                     </div>
                 </div>
     `
-});
+};
 
-// работает с локальным компонентом. Как импортировать в этот файл компонент из ErrorComponent.js?
-Vue.component('errormessage', {
-    props: [],
+const products = {
+    components: { product },
+    data () {
+        return {
+            catalogUrl: '/catalogData.json',
+            products: [],
+            filtered: [],
+            imgCatalog: 'https://via.placeholder.com/200x150',
+        }
+    },
+    mounted () {
+        this.$parent.getJson(`${API + this.catalogUrl}`)
+           .then(data => {
+               for(let el of data){
+                   this.products.push(el);
+                   this.filtered.push(el);
+               }
+           });
+    },
+    methods: {
+        filter(value) {
+            let regexp = new RegExp(value, 'i');
+            this.filtered = this.products.filter(product => regexp.test(product.product_name));
+        },
+    },
     template: `
-                <div>
-                    <p>Не удалось выполнить запрос к серверу</p>
+                <div class="products">
+                    <product 
+                    v-for="product of filtered" 
+                    :key="product.id_product"
+                    :img="imgCatalog"
+                    :product="product"
+                    >
+                    </product>
                 </div>
     `
-});
-
-// @click="$parent.$emit('add-product', product)"
-// @click="$parent.$emit('функция(с названием из верстки)', то что функция принимает на вход)
-
-// первый метод быстрее и правильнее, но так же можно еще записать так:
-// @click="root.addProduct(product)"
+};
